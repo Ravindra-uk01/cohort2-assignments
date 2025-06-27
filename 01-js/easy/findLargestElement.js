@@ -5,8 +5,16 @@
   - Output: 9
 */
 
+// npx jest ./tests/findLargestElement.test.js
+
 function findLargestElement(numbers) {
-    console.log('abcd')
+    let res = numbers[0];
+    for (let i = 1; i < numbers.length; i++) {
+        if (numbers[i] > res) {
+            res = numbers[i];
+        }
+    }
+    return res;
 }
 
 module.exports = findLargestElement;

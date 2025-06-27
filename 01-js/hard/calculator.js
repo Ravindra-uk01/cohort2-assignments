@@ -16,6 +16,69 @@
   Once you've implemented the logic, test your code by running
 */
 
-class Calculator {}
+class Calculator {
+
+    constructor( x ){
+      this.res = x;
+    }
+
+    add(x){
+      if(/^[0-9 ]+$/.test(x)){
+        let input = x.replace(/\D/g, '');
+        let combinedInput = Number(input);
+
+        this.res += combinedInput;
+      }else {
+        throw Error("invalid non numerical characters")
+      }
+    }
+    subtract(x){
+      if(/^[0-9 ]+$/.test(x)){
+        let input = x.replace(/\D/g, '');
+        let combinedInput = Number(input);
+
+        this.res -= combinedInput;
+      }else {
+        throw Error("invalid non numerical characters")
+      }
+    }
+    multiply(x){
+      if(/^[0-9 ]+$/.test(x)){
+        let input = x.replace(/\D/g, '');
+        let combinedInput = Number(input);
+
+        this.res *= combinedInput;
+      }else {
+        throw Error("invalid non numerical characters")
+      }
+    }
+    divide(x){
+      if(/^[0-9 ]+$/.test(x)){
+        let input = x.replace(/\D/g, '');
+        let combinedInput = Number(input);
+
+        this.res /= combinedInput;
+      }else {
+        throw Error("invalid non numerical characters")
+      }
+    }
+    clear(){
+      this.res = 0;
+    }
+    getResult(){
+      return this.res;
+    }
+    calculate(x){
+       // `10 +   2 *    (   6 - (4 + 1) / 2) + 7`
+        if(/^[0-9 +-*()\/]+$/.test(x)){
+        let sum = 0;
+
+        this.res = sum;
+      }else {
+        throw Error("invalid non numerical characters")
+      }
+
+    }
+}
 
 module.exports = Calculator;
