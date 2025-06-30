@@ -1,3 +1,5 @@
+
+
 /*
   Implement a class `Calculator` having below methods
     - initialise a result variable in the constructor and keep updating it after every arithmetic operation
@@ -18,46 +20,41 @@
 
 class Calculator {
 
-    constructor( x ){
+    constructor( x = 0) {
+      
       this.res = x;
     }
 
     add(x){
-      if(/^[0-9 ]+$/.test(x)){
-        let input = x.replace(/\D/g, '');
-        let combinedInput = Number(input);
-
-        this.res += combinedInput;
+      if(typeof x === 'number'){
+        this.res += x;
       }else {
         throw Error("invalid non numerical characters")
       }
     }
     subtract(x){
-      if(/^[0-9 ]+$/.test(x)){
-        let input = x.replace(/\D/g, '');
-        let combinedInput = Number(input);
+      if(typeof x === 'number'){
 
-        this.res -= combinedInput;
+        this.res -= x;
       }else {
         throw Error("invalid non numerical characters")
       }
     }
     multiply(x){
-      if(/^[0-9 ]+$/.test(x)){
-        let input = x.replace(/\D/g, '');
-        let combinedInput = Number(input);
+      if(typeof x === 'number'){
 
-        this.res *= combinedInput;
+        this.res *= x;
       }else {
         throw Error("invalid non numerical characters")
       }
     }
     divide(x){
-      if(/^[0-9 ]+$/.test(x)){
-        let input = x.replace(/\D/g, '');
-        let combinedInput = Number(input);
-
-        this.res /= combinedInput;
+      if(x === 0){
+        throw Error("cannot divide by zero");
+      }
+      if(typeof x === 'number'){
+  
+        this.res /= x;
       }else {
         throw Error("invalid non numerical characters")
       }
@@ -69,14 +66,17 @@ class Calculator {
       return this.res;
     }
     calculate(x){
-       // `10 +   2 *    (   6 - (4 + 1) / 2) + 7`
-        if(/^[0-9 +-*()\/]+$/.test(x)){
-        let sum = 0;
-
-        this.res = sum;
-      }else {
-        throw Error("invalid non numerical characters")
+  
+      this.res = eval(x.replace(/\s+/g, ''));
+      if (isNaN(this.res)) {
+        throw Error("invalid non numerical characters");
       }
+
+      if (this.res === Infinity || this.res === -Infinity) {
+        throw Error("division by zero");
+      }
+
+      return this.res;
 
     }
 }
