@@ -10,6 +10,7 @@
   Once you've implemented the logic, test your code by running
 */
 
+console.log('todo is working fine');
 class Todo {
     constructor() {
         this.todos = [];

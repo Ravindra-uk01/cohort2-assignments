@@ -18,6 +18,7 @@
   Once you've implemented the logic, test your code by running
 */
 
+console.log('checking if the code is working fine');
 class Calculator {
 
     constructor( x = 0) {
