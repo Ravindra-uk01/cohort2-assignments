@@ -3,6 +3,8 @@ const path = require("path");
 
 function readFile() {
   for(let i=0; i<100000000; i++){};
+
+  // readFile is an asynchronous function that reads data from a file.
   fs.readFile(path.join(__dirname, "1-counter.md"), "utf-8", (err, data) => {
     if (err) {
       console.error("Error reading file:", err);
