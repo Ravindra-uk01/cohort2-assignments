@@ -5,4 +5,5 @@ const counter = () => {
   setTimeout(counter, 1000);
 }
 
+// this is the counter function 
 counter();

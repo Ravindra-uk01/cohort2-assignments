@@ -6,4 +6,5 @@ const fn = () => {
   console.log(count);
 }
 
+// this is interval Id 
 const intervalId = setInterval(fn, 1000);
