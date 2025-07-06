@@ -17,5 +17,53 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
+app.use(express.json());
 
+app.get("/files", (req, res) => {
+  const filesDir = path.join(__dirname, 'files');
+  // const files = fs.readdirSync(filesDir).filter(file => {
+  //   return fs.statSync(path.join(filesDir, file)).isFile();
+  // })
+
+
+  let files ;
+
+  fs.readdir(filesDir, (err, files) => {
+    if(err) {
+      return res.status(500).json({ 
+        message: "Internal Server Error",
+      });
+    }
+    files = files.filter(file => {
+      return fs.statSync(path.join(filesDir, file)).isFile();
+    });
+  })
+
+  res.status(200).json({
+    message: "List of files",
+    files: files
+  });
+});
+
+app.get("/file/:filename", (req, res) => {
+   
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, 'files', filename);
+
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    return res.status(200).send(fileContent);
+  } else{
+    return res.status(404).send("File not found");
+  }
+
+})
+
+app.use((req, res) => {
+    res.status(404).send('Route not found');
+});
+
+// app.listen(3000, () => {
+//   console.log('File server is running on http://localhost:3000');
+// });
 module.exports = app;
