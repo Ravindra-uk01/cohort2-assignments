@@ -41,9 +41,127 @@
  */
   const express = require('express');
   const bodyParser = require('body-parser');
+  const fs = require('fs');
+  const path = require('path');
   
   const app = express();
   
   app.use(bodyParser.json());
+
+  // let todos = [];
+  // let nextId = 1;
+
+  // Hard todo 
+
+  const getTodos = () => {
+    try {
+        fs.readFile(path.join(__dirname, 'todos.json'), 'utf-8', (err, data) => {
+            if (err) {
+                console.error('Error reading todos file:', err);
+                return [];
+            }
+            return JSON.parse(data);
+        });
+    } catch (error) {
+        console.error('Error reading todos from file:', error);
+    }
+  }
+
+  const saveTodos = (todos) => {
+    try {
+       fs.writeFile(path.join(__dirname, 'todos.json'), JSON.stringify(todos, null, 2), (err) => {
+            if (err) {
+                console.error('Error writing todos to file:', err);
+            }
+        });
+    }
+    catch (error) {
+        console.error('Error saving todos to file:', error);
+    }
+  }
+
+  app.get('/todos', (req, res) => {
+      // const allTodos = todos;
+      const allTodos = getTodos();
+      res.status(200).json(allTodos);
+  });
+
+  app.post('/todos', (req, res) => {
+
+    const { title, description } = req.body;
+    if (!title || !description) {
+        return res.status(400).json({ error: 'Title and description are required' });
+    }
+
+    // const newTodo = {
+    //     id: nextId++,
+    //     title,
+    //     description,
+    //     completed: false
+    // };
+
+    // todos.push(newTodo);
+
+    // for saving in-memory data to file
+    const todos = getTodos();
+    const newTodo = {
+      id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 1,
+      title,
+      description,
+      completed: false
+    }
+
+    todos.push(newTodo);
+    saveTodos(todos);
+    res.status(201).json({ id: newTodo.id });
+  });
+
+  app.get('/todos/:id', (req, res) => {
+
+      const todoId = Number(req.params.id);
+
+      const todos = getTodos();
+
+      const todo = todos.find(t => t.id === todoId);
+
+      if(!todo) {
+          return res.status(404).json({ error: 'Todo not found' });
+      }
+
+      return res.status(200).json(todo);
+  });
+
+  app.put('/todos/:id', (req, res) => {
+      const todoId = Number(req.params.id);
+
+      const todos = getTodos();
+      const todo = todos.find(t => t.id === todoId);
+
+      if (!todo) {
+          return res.status(404).json({ error: 'Todo not found' });
+      }
+      const { title, description, completed } = req.body;
+      if (title !== undefined) todo.title = title;
+      if (description !== undefined) todo.description = description;  
+      if (completed !== undefined) todo.completed = completed;
+
+      saveTodos(todos);
+
+      res.status(200).json(todo);
+  });
+
+  app.delete('/todos/:id', (req, res) => {
+      const todoId = Number(req.params.id);
+    
+      const todos = getTodos();
+      const todoIndex = todos.findIndex(t => t.id === todoId);
+      if (todoIndex === -1) {
+          return res.status(404).json({ error: 'Todo not found' });
+      }
+
+      todos.splice(todoIndex, 1);
+      saveTodos(todos);
+      res.status(200).json({ message: 'Todo deleted successfully' });
+  });
   
   module.exports = app;
