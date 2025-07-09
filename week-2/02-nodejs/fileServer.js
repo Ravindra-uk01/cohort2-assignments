@@ -38,8 +38,6 @@ app.get("/file/:filename", (req, res) => {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, 'files', filename);
 
-  console.log("filepath: ",filePath);
-
   fs.readFile(filePath, 'utf-8', (err, data) => {
     if (err) {
       if (err.code === 'ENOENT') {
@@ -48,7 +46,6 @@ app.get("/file/:filename", (req, res) => {
       return res.status(500).send('Internal Server Error');
     }
 
-    console.log("data: ",data);
     res.status(200).send(data);
   });
 

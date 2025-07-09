@@ -6,6 +6,7 @@
 
 async function sleep(milliseconds) {
     
+    console.log(`Sleeping for ${milliseconds} milliseconds...`);
     return new Promise((resolve, reject) => {
         setTimeout(resolve, milliseconds);
     })

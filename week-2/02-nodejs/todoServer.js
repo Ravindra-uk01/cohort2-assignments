@@ -51,7 +51,7 @@
   // let todos = [];
   // let nextId = 1;
 
-  // Hard todo 
+  // Hard todo - working on it 
 
   const getTodos = () => {
     try {
