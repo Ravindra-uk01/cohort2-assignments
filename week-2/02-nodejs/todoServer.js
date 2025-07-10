@@ -39,129 +39,110 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  const fs = require('fs');
-  const path = require('path');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
+const express = require("express");
+const bodyParser = require("body-parser");
+const fs = require("fs").promises;
+const path = require("path");
+const crypto = require("crypto");
 
-  // let todos = [];
-  // let nextId = 1;
+const app = express();
 
-  // Hard todo - working on it 
+app.use(bodyParser.json());
 
-  const getTodos = () => {
-    try {
-        fs.readFile(path.join(__dirname, 'todos.json'), 'utf-8', (err, data) => {
-            if (err) {
-                console.error('Error reading todos file:', err);
-                return [];
-            }
-            return JSON.parse(data);
-        });
-    } catch (error) {
-        console.error('Error reading todos from file:', error);
-    }
+// let todos = [];
+// let nextId = 1;
+
+// Hard todo - working on it
+const todosFilePath = path.join(__dirname, "todos.json");
+
+app.get("/todos", async (req, res) => {
+  const data = await fs.readFile(todosFilePath, 'utf-8');
+  const allTodos = JSON.parse(data);
+  res.status(200).json(allTodos);
+});
+
+app.post("/todos", async (req, res) => {
+  const { title, description } = req.body;
+  if (!title || !description) {
+    return res
+      .status(400)
+      .json({ error: "Title and description are required" });
   }
 
-  const saveTodos = (todos) => {
-    try {
-       fs.writeFile(path.join(__dirname, 'todos.json'), JSON.stringify(todos, null, 2), (err) => {
-            if (err) {
-                console.error('Error writing todos to file:', err);
-            }
-        });
+  // const newTodo = {
+  //     id: nextId++,
+  //     title,
+  //     description,
+  //     completed: false
+  // };
+
+  // todos.push(newTodo);
+
+  // for saving in-memory data to file
+
+  const newTodo = {
+    id: crypto.randomBytes(4).toString("hex"), // Generate a random ID
+    title,
+    description,
+    completed: false,
+  };
+
+  const todos = JSON.parse(await fs.readFile(todosFilePath, "utf-8"));
+  todos.push(newTodo);
+
+  await fs.writeFile(todosFilePath, JSON.stringify(todos, null, 2), (err) => {
+    if (err) {
+      console.error("Error writing todos to file:", err);
     }
-    catch (error) {
-        console.error('Error saving todos to file:', error);
-    }
+  });
+
+  res.status(201).json({ id: newTodo.id });
+});
+
+app.get("/todos/:id", async (req, res) => {
+  const todoId = req.params.id;
+  const todos = JSON.parse(await fs.readFile(todosFilePath, "utf-8"));
+  const todo = todos.find((t) => t.id === todoId);
+
+  if (!todo) {
+    return res.status(404).json({ error: "Todo not found" });
   }
 
-  app.get('/todos', (req, res) => {
-      // const allTodos = todos;
-      const allTodos = getTodos();
-      res.status(200).json(allTodos);
-  });
+  return res.status(200).json(todo);
+});
 
-  app.post('/todos', (req, res) => {
+app.put("/todos/:id", async (req, res) => {
+  const todoId = req.params.id;
+  const todos = JSON.parse(await fs.readFile(todosFilePath, "utf-8"));
+  const todo = todos.find((t) => t.id === todoId);
 
-    const { title, description } = req.body;
-    if (!title || !description) {
-        return res.status(400).json({ error: 'Title and description are required' });
+  if (!todo) {
+    return res.status(404).json({ error: "Todo not found" });
+  }
+  const { title, description, completed } = req.body;
+  if (title !== undefined) todo.title = title;
+  if (description !== undefined) todo.description = description;
+  if (completed !== undefined) todo.completed = completed;
+
+  res.status(200).json(todo);
+});
+
+app.delete("/todos/:id", async (req, res) => {
+  const todoId = req.params.id;
+
+  const todos = JSON.parse(await fs.readFile(todosFilePath, "utf-8"));
+  const todoIndex = todos.findIndex((t) => t.id === todoId);
+  if (todoIndex === -1) {
+    return res.status(404).json({ error: "Todo not found" });
+  }
+
+  todos.splice(todoIndex, 1);
+  await fs.writeFile(todosFilePath, JSON.stringify(todos, null, 2), (err) => {
+    if (err) {
+      console.error("Error writing todos to file:", err);
     }
-
-    // const newTodo = {
-    //     id: nextId++,
-    //     title,
-    //     description,
-    //     completed: false
-    // };
-
-    // todos.push(newTodo);
-
-    // for saving in-memory data to file
-    const todos = getTodos();
-    const newTodo = {
-      id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 1,
-      title,
-      description,
-      completed: false
-    }
-
-    todos.push(newTodo);
-    saveTodos(todos);
-    res.status(201).json({ id: newTodo.id });
   });
+  res.status(200).json({ message: "Todo deleted successfully" });
+});
 
-  app.get('/todos/:id', (req, res) => {
-
-      const todoId = Number(req.params.id);
-
-      const todos = getTodos();
-
-      const todo = todos.find(t => t.id === todoId);
-
-      if(!todo) {
-          return res.status(404).json({ error: 'Todo not found' });
-      }
-
-      return res.status(200).json(todo);
-  });
-
-  app.put('/todos/:id', (req, res) => {
-      const todoId = Number(req.params.id);
-
-      const todos = getTodos();
-      const todo = todos.find(t => t.id === todoId);
-
-      if (!todo) {
-          return res.status(404).json({ error: 'Todo not found' });
-      }
-      const { title, description, completed } = req.body;
-      if (title !== undefined) todo.title = title;
-      if (description !== undefined) todo.description = description;  
-      if (completed !== undefined) todo.completed = completed;
-
-      saveTodos(todos);
-
-      res.status(200).json(todo);
-  });
-
-  app.delete('/todos/:id', (req, res) => {
-      const todoId = Number(req.params.id);
-    
-      const todos = getTodos();
-      const todoIndex = todos.findIndex(t => t.id === todoId);
-      if (todoIndex === -1) {
-          return res.status(404).json({ error: 'Todo not found' });
-      }
-
-      todos.splice(todoIndex, 1);
-      saveTodos(todos);
-      res.status(200).json({ message: 'Todo deleted successfully' });
-  });
-  
-  module.exports = app;
+module.exports = app;
