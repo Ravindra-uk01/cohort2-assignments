@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://rayalravi2001:0QRdusyqQMhIqp07@cluster0.5qxphdu.mongodb.net/SkillShop?retryWrites=true&w=majority&appName=SkillShop');
+mongoose.connect(process.env.MONGO_URI);
 
 // Define schemas
 const AdminSchema = new mongoose.Schema({
