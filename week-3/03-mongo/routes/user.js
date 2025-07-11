@@ -46,7 +46,7 @@ router.post('/courses/:courseId', userMiddleware, async(req, res) => {
         const courseId = req.params.courseId;
         const userId = req.user._id; 
 
-        const course = Course.findById(courseId);
+        const course = await Course.findById(courseId);
         if (!course) {
             return res.status(404).json({ error: "Course not found" });
         }
@@ -63,12 +63,12 @@ router.post('/courses/:courseId', userMiddleware, async(req, res) => {
     }
 });
 
-router.get('/purchasedCourses', userMiddleware, (req, res) => {
+router.get('/purchasedCourses', userMiddleware, async(req, res) => {
     // Implement fetching purchased courses logic
     try {
         const userId = req.user._id;
 
-        const purchasedCourses = PurchasedCourse.find({ userId });
+        const purchasedCourses = await PurchasedCourse.find({ userId });
         return res.status(200).json(purchasedCourses);
     } catch (error) {
         return res.status(500).json({ error: error.message });

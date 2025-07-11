@@ -1,8 +1,18 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI);
+async function connectToMongoDB() {
+    try {
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log("Connected to MongoDB successfully");
+    } catch (err) {
+        console.error("Error connecting to MongoDB:", err);
+    }
+}
 
+// Call the async function
+connectToMongoDB();
 // Define schemas
 const AdminSchema = new mongoose.Schema({
     // Schema definition here
