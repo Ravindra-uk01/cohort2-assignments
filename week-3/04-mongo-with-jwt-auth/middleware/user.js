@@ -14,8 +14,8 @@ async function userMiddleware(req, res, next) {
         return res.status(401).json({ error: "Unauthorized: Invalid username or password" });
     }
 
-    req.user = user; // Attach user to request object for further use
-    next(); // Call the next middleware or route handler
+    req.user = user; 
+    next(); 
 
 }
 
