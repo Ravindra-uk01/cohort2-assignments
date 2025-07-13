@@ -31,7 +31,12 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/signin", async (req, res) => {
-    
+    try {
+       const { username, password } = req.body;
+       
+    } catch (error) {
+     return res.status(400).json({ error: "Internal Server Error" });
+    }
 });
 
 router.post("/courses", adminMiddleware, async (req, res) => {

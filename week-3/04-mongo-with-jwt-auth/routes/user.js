@@ -34,7 +34,6 @@ router.post('/signin',  async(req, res) => {
 })
 
 router.get('/courses', async(req, res) => {
-    // Implement listing all courses logic
     try {
         const courses = await Course.find();
         return res.status(200).json(courses);
@@ -44,8 +43,6 @@ router.get('/courses', async(req, res) => {
 });
 
 router.post('/courses/:courseId', userMiddleware, async(req, res) => {
-    // Implement course purchase logic
-
     try {
         const courseId = req.params.courseId;
         const userId = req.user._id; 
@@ -68,7 +65,6 @@ router.post('/courses/:courseId', userMiddleware, async(req, res) => {
 });
 
 router.get('/purchasedCourses', userMiddleware, async(req, res) => {
-    // Implement fetching purchased courses logic
     try {
         const userId = req.user._id;
 
