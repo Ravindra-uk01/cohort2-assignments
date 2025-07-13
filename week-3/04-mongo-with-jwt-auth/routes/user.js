@@ -11,7 +11,7 @@ const userValidationSchema = z.object({
 
 // User Routes
 router.post('/signup', async(req, res) => {
-    // Implement user signup logic
+    
     try {
         const { username, password } = req.body;
         const parsedData = userValidationSchema.safeParse({ username, password });
