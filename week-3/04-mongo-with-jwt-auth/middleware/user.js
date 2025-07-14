@@ -1,20 +1,27 @@
 const { User } = require("../db");
+const jwt = require("jsonwebtoken");
 
 async function userMiddleware(req, res, next) {
-   
-    const {username, password} = req.headers;
-    if (!username || !password) {
-        return res.status(401).json({ error: "Unauthorized: Missing username or password" });
-    }
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized: Missing token" });
+  }
 
-    const user = await User.findOne({ username, password });
-    if (!user) {
-        return res.status(401).json({ error: "Unauthorized: Invalid username or password" });
-    }
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = user; 
-    next(); 
+  if (!decoded) {
+    return res.status(401).json({ error: "Unauthorized: Invalid token" });
+  }
 
+  const user = await User.findById(decoded.id);
+  if (!user) {
+    return res
+      .status(401)
+      .json({ error: "Unauthorized: Invalid username or password" });
+  }
+
+  req.user = user;
+  next();
 }
 
 module.exports = userMiddleware;
