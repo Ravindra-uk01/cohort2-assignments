@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React</title>
+    <script>
+      let globalId = 1;
+      let todoState = [];
+      let oldTodoState = [];
+
+      function addTodoToDom() {}
+
+      function removeTodoFromDom(todo) {}
+
+      function updateTodoInDom(oldTodo, newTodo) {}
+
+      function updateState(newTodos) {
+        // calculate the diff b/w newTodos and oldTodos.
+        // More specifically, find out what todos are -
+        // 1. added
+        // 2. deleted
+        // 3. updated
+        const added = [];
+        const deleted = [];
+        const updated = [];
+        // calculate these 3 arrays
+        // call addTodo, removeTodo, updateTodo functions on each of the
+        // elements
+        oldTodoState = newTodos;
+
+        newTodos.forEach((todo) => {
+          const oldTodo = oldTodoState.find((old) => old.id === todo.id);
+          if(!oldTodo){
+            added.push(todo);
+          } else if( oldTodo.title !== todo.title || oldTodo.description !== todo.description){
+            updated.push({old: oldTodo, new : todo});
+          }
+        })
+
+        oldTodoState.forEach((todo) => {
+          const newTodo = newTodos.find((newT) => newT.id === todo.id);
+          if(!newTodo){
+            deleted.push(todo);
+          }
+        })
+
+        
+
+        const todoElement = document.getElementById("todos");
+        const ul = document.createElement("ul");
+        newTodos.forEach((todo) => {
+          const li = document.createElement("li");
+          li.textContent = `${todo.id} - ${todo.title} - ${todo.description}`;
+          li.setAttribute("id", todo.id);
+          ul.appendChild(li);
+        })
+
+        todoElement.innerHTML = ""; 
+        todoElement.appendChild(ul);
+      }
+
+      function addTodo() {
+        const title = document.getElementById("title").value;
+        const description = document.getElementById("description").value;
+        todoState.push({
+          title: title,
+          description: description,
+          id: globalId++,
+        });
+        updateState(todoState);
+      }
+    </script>
+  </head>
+  <body>
+     <input type="text" id="title" placeholder="Todo title"></input> <br /><br />
+  <input type="text" id="description" placeholder="Todo description"></input> <br /><br />
+  <button onclick="addTodo()">Add todo</button>
+  <br /> <br />
+
+  <div id="todos">
+
+  </div>
+  </body>
+</html>
