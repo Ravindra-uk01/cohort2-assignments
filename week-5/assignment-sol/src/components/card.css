@@ -1,0 +1,29 @@
+.card{
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    text-align: start;
+    color: black;
+    width: 400px;
+}
+
+.interests_ul{
+    list-style-type: none;
+    padding: 0;
+}
+
+.social_links{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.social_links > button{
+    background-color: blue;
+}
+
+.social_links > button > a {
+    color: white;
+    text-decoration: none;
+}
