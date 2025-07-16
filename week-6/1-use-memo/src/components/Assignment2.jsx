@@ -21,12 +21,12 @@ export function Assignment2() {
     const [filter, setFilter] = useState("");
 
     const filteredSentences = sentences.filter(x => x.includes(filter))
-
+    console.log("Filtering sentences with filter:", filter);
     return <div>
         <input type="text" onChange={(e) => {
             setFilter(e.target.value)
         }}></input>
-        {filteredSentences.map(word => <div>
+        {filteredSentences.map(word => <div key={word} >
             {word}    
         </div>)}
     </div>

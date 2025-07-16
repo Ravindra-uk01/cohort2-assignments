@@ -14,6 +14,8 @@ export const Assignment3 = () => {
     // Your code starts here
     const totalValue = 0;
     // Your code ends here
+
+    console.log('Calculating total value of items:', totalValue);
     return (
         <div>
             <ul>
