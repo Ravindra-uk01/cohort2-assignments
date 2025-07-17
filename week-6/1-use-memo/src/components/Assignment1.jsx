@@ -18,8 +18,6 @@ export function Assignment1() {
     },[input]); 
     // Your solution ends here
 
-    // console.log("Expensive value calculated:",expensiveValue(input));
-
     return (
         <div>
             <input 
