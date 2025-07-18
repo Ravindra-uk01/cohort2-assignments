@@ -22,7 +22,7 @@ export function Assignment2() {
 
     const filteredSentences = useMemo(()=>{
         return sentences.filter(sentence => sentence.includes(filter));
-    } , [filter]);
+    } , [filter,sentences ]);
     console.log("Filtering sentences with filter:", filter);
     return <div>
         <input type="text" onChange={(e) => {
