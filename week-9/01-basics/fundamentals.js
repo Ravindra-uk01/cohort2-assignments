@@ -1,0 +1,10 @@
+var x = 1;
+var name1 = "John";
+var nullValue = null;
+var undefinedValue = undefined;
+var booleanValue = true;
+console.log(x);
+console.log(name1);
+console.log(nullValue);
+console.log(undefinedValue);
+console.log(booleanValue);
