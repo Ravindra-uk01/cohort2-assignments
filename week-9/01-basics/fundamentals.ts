@@ -4,8 +4,21 @@ let nullValue:null = null;
 let undefinedValue:undefined = undefined; 
 let booleanValue:boolean = true;
 
-console.log(x);
-console.log(name1);
-console.log(nullValue);
-console.log(undefinedValue);
-console.log(booleanValue);
+function greet (name:string){
+    console.log( `Hello, ${name}`);
+}
+
+greet("Amelia");
+
+function sum (a:number , b:number){
+    return a + b;
+}
+
+console.log(sum(5, 10));
+
+function isLegal(age: number){
+    return age >= 18;
+}
+
+console.log(isLegal(20)); // true
+console.log(isLegal(16)); // false

@@ -1,10 +1,19 @@
-var x = 1;
-var name1 = "John";
-var nullValue = null;
-var undefinedValue = undefined;
-var booleanValue = true;
-console.log(x);
-console.log(name1);
-console.log(nullValue);
-console.log(undefinedValue);
-console.log(booleanValue);
+"use strict";
+let x = 1;
+let name1 = "John";
+let nullValue = null;
+let undefinedValue = undefined;
+let booleanValue = true;
+function greet(name) {
+    console.log(`Hello, ${name}`);
+}
+greet("Amelia");
+function sum(a, b) {
+    return a + b;
+}
+console.log(sum(5, 10));
+function isLegal(age) {
+    return age >= 18;
+}
+console.log(isLegal(20)); // true
+console.log(isLegal(16)); // false
