@@ -29,3 +29,8 @@ const item : product1 = {
 }
 
 console.log(item);
+
+type name = string | number;
+
+const identifier: name = "Product123";
+console.log(identifier); // Output: Product123

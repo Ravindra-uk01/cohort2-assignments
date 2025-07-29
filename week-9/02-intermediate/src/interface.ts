@@ -70,7 +70,11 @@ interface fruit {
     color: string;
 }
 
+
 // const fruit1: fruit = {
 //     name: "Apple",  /// this will give an error because name cannot be both string and number
 //     color: "Red"
 // }
+
+// we can use interface to implement classes as well 
+console.log(product2); // Output: { name: 'Phone', price: '1200', category: 'Electronics' }
