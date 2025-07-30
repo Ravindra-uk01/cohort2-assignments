@@ -77,4 +77,24 @@ interface fruit {
 // }
 
 // we can use interface to implement classes as well 
-console.log(product2); // Output: { name: 'Phone', price: '1200', category: 'Electronics' }
+
+// merging multiple interfaces with the same name
+
+interface vehicle {
+    brand: string;
+    model: string;
+}
+
+interface vehicle {
+    year: number;
+    color: string;
+}
+
+const car : vehicle = {
+    brand: "Toyota",
+    model: "Camry",
+    year: 2020,
+    color: "Blue"
+}
+
+console.log('car:', car); // Output: { brand: 'Toyota', model: 'Camry', year: 2020, color: 'Blue' }

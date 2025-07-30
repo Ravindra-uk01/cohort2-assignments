@@ -30,7 +30,10 @@ const product2 = {
 };
 console.log(product1); // Output: { name: 'Laptop', price: 1200, category: 'Electronics' }
 console.log(product2);
-// const fruit1: fruit = {
-//     name: "Apple",  /// this will give an error because name cannot be both string and number
-//     color: "Red"
-// }
+const car = {
+    brand: "Toyota",
+    model: "Camry",
+    year: 2020,
+    color: "Blue"
+};
+console.log('car:', car); // Output: { brand: 'Toyota', model: 'Camry', year: 2020, color: 'Blue' }
