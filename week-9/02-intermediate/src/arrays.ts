@@ -28,4 +28,4 @@ const users: User2[] = [
     { id: 3, name: "Charlie", age: 20 }
 ];
 
-console.log(legalUser(users)); // Output: [ { id: 1, name: 'Alice', age: 25 }, { id: 3, name: 'Charlie', age: 20 } ]
+// console.log(legalUser(users)); // Output: [ { id: 1, name: 'Alice', age: 25 }, { id: 3, name: 'Charlie', age: 20 } ]
